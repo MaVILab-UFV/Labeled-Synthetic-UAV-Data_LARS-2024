@@ -1,0 +1,15 @@
+<launch>
+  <!-- Define the world_name argument with a default value -->
+  <arg name="world_name" default="$(find cessna_simulation)/worlds/cessna_original.world"/>
+
+  <!-- Start Gazebo server with the specified world -->
+  <node name="gazebo" pkg="gazebo_ros" type="gzserver" args="-s libgazebo_ros_factory.so $(arg world_name)" output="screen"/>
+
+  <!-- Start Gazebo client -->
+  <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" output="screen"/>
+
+  <!-- Start RViz -->
+  <node name="rviz" pkg="rviz" type="rviz" output="screen"/>
+
+
+</launch>

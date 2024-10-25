@@ -1,0 +1,11 @@
+<launch>
+  <!-- Start the ROS core -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find cessna_simulation)/worlds/cessna.world"/>
+  </include>
+
+  <!-- Load the Gazebo ROS packages -->
+  <node name="gazebo" pkg="gazebo_ros" type="gzserver" args="$(arg world_name)" output="screen"/>
+  <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" output="screen"/>
+
+</launch>

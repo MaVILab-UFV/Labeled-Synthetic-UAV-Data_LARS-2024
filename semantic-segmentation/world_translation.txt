@@ -1,0 +1,9 @@
+roll_world: 0.0
+pitch_world: 0.0
+yaw_world: 0.0
+scale_x_world: 1.0
+scale_y_world: 1.0
+scale_z_world: 1.0
+translate_x_world: 0.0
+translate_y_world: 0.0
+translate_z_world: 0.0

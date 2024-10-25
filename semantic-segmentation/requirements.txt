@@ -1,0 +1,11 @@
+laspy
+open3d
+rasterio
+numpy
+pycollada
+Pillow
+PyGLM
+glfw==2.5.3
+PyOpenGL==3.1.6
+PyOpenGL_accelerate==3.1.6
+

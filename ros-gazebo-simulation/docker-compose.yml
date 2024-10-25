@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  gazebo_uav_sim:
+    image: mavilab/gazebo-uav-sim:v1.0
+    container_name: gazebo_uav_sim
+    build:
+      context: .
+      dockerfile: Dockerfile
+    network_mode: host
+    environment:
+      - ROS_HOSTNAME=127.0.0.1
+      - ROS_MASTER_URI=http://127.0.0.1:11311
+      - DISPLAY
+      - PYTHONUNBUFFERED=1
+      - NVIDIA_VISIBLE_DEVICES=0
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - QT_X11_NO_MITSHM=1
+    ipc: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    runtime: nvidia
+    volumes:
+      - $HOME/.Xauthority:/root/.Xauthority:rw
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - $PWD/src/:/catkin_ws/src/
+    privileged: true 
+    command: /bin/bash -c '. /opt/ros/noetic/setup.bash && . /catkin_ws/devel/setup.bash && roslaunch cessna_simulation cessna_world_rviz.launch'

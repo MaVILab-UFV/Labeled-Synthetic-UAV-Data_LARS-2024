@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="cessna_c172">
+
+  <!-- Base link with dummy visualization and collision -->
+  <link name="base_link">
+   <visual>
+     <geometry>
+       <box size="0.1 0.1 0.1"/>
+     </geometry>
+     <material name="Gazebo/Red">
+       <color rgba="1.0 0.0 0.0 0.5"/>
+     </material>
+   </visual>
+   <inertial>
+     <mass value="0.1"/>
+     <origin xyz="0 0 0" rpy="0 0 0"/>
+     <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+   </inertial>
+ </link>
+
+  <!-- Define the necessary arguments for the macro -->
+  <xacro:arg name="base_link_frame" default="sensor_link" />
+  <xacro:arg name="world_frame" default="world" />
+
+  <!-- Include the quadrotor_sensors xacro file -->
+  <xacro:include filename="$(find hector_quadrotor_gazebo)/urdf/quadrotor_sensors.gazebo.xacro" />
+
+   <!-- Downward facing camera -->
+   <xacro:include filename="$(find hector_sensors_description)/urdf/generic_camera.urdf.xacro" />
+   <xacro:generic_camera name="front_cam" parent="base_link" ros_topic="camera/image" cam_info_topic="camera/camera_info" update_rate="30" res_x="800" res_y="600" image_format="R8G8B8" hfov="60">
+     <origin xyz="0 0.0 -0.0" rpy="0 ${M_PI/4} 0"/>
+   </xacro:generic_camera>
+
+  <!-- Call the macro with the appropriate arguments -->
+  <xacro:quadrotor_sensors />
+
+  <!-- Gazebo elements for the base_link -->
+  <gazebo reference="base_link">
+   <material>Gazebo/Red</material>
+   <!-- Disable gravity -->
+   <gravity>false</gravity>
+   <!-- Disable kinematics -->
+   <kinematic>false</kinematic>
+ </gazebo>
+
+</robot>

@@ -1,0 +1,36 @@
+<launch>
+  <!-- Set use_sim_time parameter to true -->
+  <param name="use_sim_time" value="true"/>
+
+  <!-- Define the world_name argument with a default value -->
+  <arg name="world_name" default="$(find cessna_simulation)/worlds/cessna.world"/>
+
+  <!-- Set the GAZEBO_VERBOSE environment variable -->
+  <env name="GAZEBO_VERBOSE" value="true"/>
+
+  <!-- Convert the cessna.xacro file to URDF -->
+  <param name="robot_description" command="$(find xacro)/xacro '$(find cessna_simulation)/urdf/cessna.xacro'" />
+
+  <!-- Load the robot in Gazebo -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" />
+
+  <!-- Start Gazebo server with the specified world and verbose logging -->
+  <node name="gazebo" pkg="gazebo_ros" type="gzserver" args="$(arg world_name) --verbose" output="screen" />
+
+  <!-- Start Gazebo client with verbose logging -->
+  <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" args="--verbose" output="screen" />
+
+  <!-- Start RViz -->
+  <node name="rviz" pkg="rviz" type="rviz" output="screen" />
+
+  <!-- Start the link_state_republisher node -->
+  <node name="link_state_republisher" pkg="cessna_simulation" type="link_state_republisher.py" output="screen" />
+
+  <!-- Start the gazebo_to_tf node -->
+  <node name="gazebo_to_tf" pkg="cessna_simulation" type="gazebo_to_tf.py" output="screen" />
+
+  <node name="data_collection" pkg="data_collection" type="subscriber.py" output="screen" />
+
+  <!-- Spawn the URDF model in Gazebo -->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model cessna_c172_sensors -param robot_description -x 0 -y 0 -z 0" />
+</launch>
